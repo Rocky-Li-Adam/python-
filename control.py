@@ -5,7 +5,7 @@ import pymysql
 import api
 import send
 
-db = api.DataWord('localhost','root','root','EnglishWord','word','mail')
+db = api.DataWord('localhost','root','root','EnglishWord','WE','mail')
  
 '''
 	查询数据库中所有的用户，并准备向他们发邮件
@@ -14,7 +14,12 @@ mail = db.SelectMail()
 for u in mail:
 	UserMail = u[0]
 	UserStart = u[1]
-	UserLimit = u[2]
+	NumId = u[2] + 1
+	UserLimit = u[3]
+
+
+	# print(UserMail,UserStart,NumId,UserLimit)
+
 	
 	'''
 		删除用户
@@ -36,7 +41,6 @@ for u in mail:
 			<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		</head>
 		<body>
-
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -54,7 +58,7 @@ for u in mail:
 				<td>{s}</td>
 				<td>{c}</td>
 			</tr>
-		'''.format(e=e,s=s,c=c)
+		'''.format(e=e,s=s,c=c.strip()).strip()
 
 	content += '''
 		</tbody>
@@ -64,18 +68,24 @@ for u in mail:
 		</html>
 	'''
 
-	'''
-		更新每个用户的起始单词id
-	'''
-	UpdateStart = UserStart + 10
-	text = db.UpdatetMail(UpdateStart, UserMail)
-
+	# print(content)
+	# break
 
 	'''
 		为每个用户发送单词
 	'''
 	user = send.SendMail(UserMail, content)
 	user.DoSend('html')
+
+	'''
+		更新每个用户的起始单词id
+	'''
+	if NumId >= 4:
+		NumId = 0
+		UpdateStart = UserStart + 10
+		text = db.UpdatetMail(UpdateStart, NumId, UserMail)
+	else:
+		text = db.UpdatetMail(UserStart, NumId, UserMail)
 
 '''
 	添加邮箱

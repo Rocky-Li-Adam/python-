@@ -47,16 +47,4 @@ class SendMail(object):
 		server.quit()
 
 if __name__ == '__main__':
-	text = '''
-		<!DOCTYPE html>
-		<html lang="zh-CN" class="no-js">
-			<head>
-			<title>hello</title>
-			</head>
-			<body>
-				<h1>Hello</h1>
-			</body>
-		</html>
-	'''
-	user = SendMail('.....@163.com',text)
-	user.DoSend('html')
+	pass

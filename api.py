@@ -48,7 +48,7 @@ class DataWord(object):
 	'''
 	def SelectMail(self):
 		sql = '''
-			SELECT mail,startid,LimitWord FROM {table}
+			SELECT mail,startid,numid,LimitWord FROM {table}
 		'''.format(table=self.mailtable).strip()
 		try:
 			self.cursor.execute(sql)
@@ -62,10 +62,10 @@ class DataWord(object):
 		更新每个mail用户的起始id(id+10)
 		默认起始单词id为0
 	'''
-	def UpdatetMail(self, start, mail):
+	def UpdatetMail(self, start, num, mail):
 		sql = '''
-			UPDATE {table} SET `startid`='{start}' WHERE `mail` = '{mail}'
-		'''.format(table=self.mailtable,start=start,mail=mail).strip()
+			UPDATE {table} SET `startid`='{start}', `numid`='{num}' WHERE `mail` = '{mail}'
+		'''.format(table=self.mailtable,start=start,num=num,mail=mail).strip()
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
@@ -107,23 +107,4 @@ class DataWord(object):
 
 
 if __name__ == '__main__':
-
-	db = DataWord('localhost','root','root','EnglishWord','WE','mail')
-
-	print('word'.center(50,'-'))
-	data = db.SelectWord(0)
-	for value in data:
-		for x in value:
-			print(x, end='\t')
-		print()
-
-	print('mail'.center(50,'-'))
-
-	# add = db.AddMail('.....@163.com')
-	# text = db.UpdatetMail('0','.....@163.com')
-	# rm = db.DelMail('.....@163.com')
-	mail = db.SelectMail()
-	for value in mail:
-		for x in value:
-			print(x, end='\t')
-		print()
+	pass
