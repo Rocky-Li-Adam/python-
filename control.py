@@ -41,18 +41,20 @@ for u in mail:
 			<thead>
 				<tr>
 					<th>英文</th>
+					<th>音标</th>
 					<th>中文</th>
 				</tr>
 			</thead>
 			<tbody>
 	'''
-	for e,c in data:
+	for e,s,c in data:
 		content += '''
 			<tr class="success">
 				<td>{e}</td>
+				<td>{s}</td>
 				<td>{c}</td>
 			</tr>
-		'''.format(e=e,c=c)
+		'''.format(e=e,s=s,c=c)
 
 	content += '''
 		</tbody>

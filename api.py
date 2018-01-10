@@ -33,7 +33,7 @@ class DataWord(object):
 	'''
 	def SelectWord(self, start, limit=10):
 		sql = '''
-			SELECT English,Chinese FROM {table} WHERE id > {start} LIMIT {limit}
+			SELECT English,Soundmark,Chinese FROM {table} WHERE id > {start} LIMIT {limit}
 		'''.format(table=self.wordtable,start=start,limit=limit).strip()
 		try:
 			self.cursor.execute(sql)
@@ -108,7 +108,7 @@ class DataWord(object):
 
 if __name__ == '__main__':
 
-	db = DataWord('localhost','root','root','EnglishWord','word','mail')
+	db = DataWord('localhost','root','root','EnglishWord','WE','mail')
 
 	print('word'.center(50,'-'))
 	data = db.SelectWord(0)
