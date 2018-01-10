@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 import json
 import pymysql
+import time
 import api
 import send
 
@@ -17,6 +18,13 @@ for u in mail:
 	NumId = u[2] + 1
 	UserLimit = u[3]
 
+	date = int(time.strftime("%H", time.localtime()))
+	if date < 12:
+		hi = 'Good morning'
+	elif date < 18:
+		hi = 'Good afternoon'
+	else:
+		hi = 'Good evening'
 
 	# print(UserMail,UserStart,NumId,UserLimit)
 
@@ -41,6 +49,8 @@ for u in mail:
 			<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		</head>
 		<body>
+		<div style="text-align:center;">
+		<h3>{hi} this is your words today.</h3>
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -50,7 +60,7 @@ for u in mail:
 				</tr>
 			</thead>
 			<tbody>
-	'''
+	'''.format(hi=hi)
 	for e,s,c in data:
 		content += '''
 			<tr class="success">
@@ -60,10 +70,39 @@ for u in mail:
 			</tr>
 		'''.format(e=e,s=s,c=c.strip()).strip()
 
+	if UserStart != 0:
+		YesterdayStart = UserStart - UserLimit
+		YesterdayData = db.SelectWord(YesterdayStart, UserLimit)
+		content += '''
+		</tbody>
+		</table>
+		</div>
+		<div style="text-align:center;">
+		<h3>And this is your yesterday words.</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>英文</th>
+					<th>音标</th>
+					<th>中文</th>
+				</tr>
+			</thead>
+			<tbody>
+		'''
+		for x,y,z in YesterdayData:
+			content += '''
+				<tr class="success">
+					<td>{x}</td>
+					<td>{y}</td>
+					<td>{z}</td>
+				</tr>
+			'''.format(x=x,y=y,z=z.strip()).strip()
+			
+
 	content += '''
 		</tbody>
 		</table>
-
+		</div>
 		</body>
 		</html>
 	'''
