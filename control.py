@@ -72,6 +72,8 @@ for u in mail:
 
 	if UserStart != 0:
 		YesterdayStart = UserStart - UserLimit
+		if YesterdayStart < 0:
+			YesterdayStart = 0
 		YesterdayData = db.SelectWord(YesterdayStart, UserLimit)
 		content += '''
 		</tbody>
